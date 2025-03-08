@@ -3,7 +3,7 @@ class BooksManager:
     os = __import__("os")
     success = False
     content = ''
-    
+
     #Methods
     def __init__(self, text_or_file:bool):
         """
@@ -12,16 +12,20 @@ class BooksManager:
         # False for text
         self.text_or_file = text_or_file
 
-    def convert_book(self, book:str, mp3_path:str, language:str)->None:
+    def convert_wordfile_to_mp3(self, book:str, mp3_path:str, language:str)->None:
         """
         """
         try:
             from gtts import gTTS
-
             # The text that you want to convert to audio
             if self.text_or_file:
-                with open(book, 'r') as file:
-                    self.content = file.readlines()
+                import docx
+                doc = docx.Document(book)
+                fullText = []
+                delimiter = " " # Define a delimiter
+                for para in doc.paragraphs:
+                    fullText.append(para.text)
+                self.content = delimiter.join(fullText)
             else:
                 self.content = book
 
